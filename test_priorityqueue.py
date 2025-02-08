@@ -27,11 +27,11 @@ class TestMinPriorityQueue(unittest.TestCase):
 
     def test_push_into_full_queue(self):
         self.priority_queue = MinPriorityQueue(0)
-        self.assertRaises(IndexError, lambda : self.priority_queue.push(1))
+        self.assertRaises(MinPriorityQueue.QueueFull, lambda : self.priority_queue.push(1))
 
         self.priority_queue = MinPriorityQueue(1)
         self.priority_queue.push(1)
-        self.assertRaises(IndexError, lambda : self.priority_queue.push(2))
+        self.assertRaises(MinPriorityQueue.QueueFull, lambda : self.priority_queue.push(2))
 
     def test_decrement_size_with_pop(self):
         self.priority_queue = MinPriorityQueue(2)
