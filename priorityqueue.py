@@ -1,6 +1,10 @@
 import math
 
-class MinPriorityQueue():
+
+class MinPriorityQueue:
+    class QueueFull(Exception):
+        pass
+
     def __init__(self, max_size) -> None:
         self.max_size = max_size
         self.size = 0
@@ -12,17 +16,22 @@ class MinPriorityQueue():
     def __bool__(self):
         return len(self) > 0
     
+    # Push element at the bottom and "swim" upwards
     def push(self, value):
+        if self.size >= self.max_size:
+            raise MinPriorityQueue.QueueFull
         self.size += 1
         self.heap[self.size] = value
         self._swim(self.size)
 
+    # Bottom-up heapify
     def _swim(self, index):
         while index > 1 and self._less(index, index // 2):
             parent_index = index // 2
             self._swap(index, parent_index)
             index = parent_index
- 
+    
+    # Delete and return the min element. The last element is put at the top and sunk down.
     def pop(self):
         if not self.size:
             return None
@@ -33,6 +42,7 @@ class MinPriorityQueue():
         self._sink(1)
         return min
 
+    # Top-down heapify
     def _sink(self, index):
         while index * 2 <= self.size:
             child_index = index * 2
