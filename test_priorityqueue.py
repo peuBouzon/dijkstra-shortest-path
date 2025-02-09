@@ -1,50 +1,63 @@
 import unittest
-from priorityqueue import MinPriorityQueue
+from priorityqueue import MinIndexPriorityQueue
 import random
 
 class TestMinPriorityQueue(unittest.TestCase):
 
     def test_pop_min_item(self):
+        numbers = [random.randint(-100, 100) for _ in range(10000)]
 
-        numbers = [random.randint(-100, 100) for _ in range(100000)]
+        self.pq = MinIndexPriorityQueue(len(numbers))
+        for i, number in enumerate(numbers):
+            self.pq.insert(i + 1, number)
+        sorted_numbers = sorted(numbers)
+        i = 0
+        while self.pq:
+            self.assertEqual(sorted_numbers[i], self.pq.pop()[1])
+            i += 1
 
-        self.priority_queue = MinPriorityQueue(len(numbers))
-        for number in numbers:
-            self.priority_queue.push(number)
+    def test_change(self):
+        self.pq = MinIndexPriorityQueue(4)
+        for i in range(1, 4):
+            self.pq.insert(i, i)
 
-        popped_numbers = []
-        while self.priority_queue:
-            popped_numbers.append(self.priority_queue.pop())
+        self.pq.change(2, -1) # now the second element is the smallest
+        min_index, min = self.pq.pop()
+        self.assertEqual(min_index, 2)
+        self.assertEqual(min, -1)
 
-        self.assertEqual(popped_numbers, sorted(numbers))
+    def test_contains(self):
+        self.pq = MinIndexPriorityQueue(1)
+        self.assertFalse(self.pq.contains(1))
+        self.pq.insert(1, 1)
+        self.assertTrue(self.pq.contains(1))
 
     def test_increment_size_with_push(self):
-        self.priority_queue = MinPriorityQueue(2)
-        self.priority_queue.push(1)
-        old_size = len(self.priority_queue)
-        self.priority_queue.push(2)
-        self.assertEqual(old_size + 1, len(self.priority_queue))
+        self.pq = MinIndexPriorityQueue(2)
+        self.pq.insert(1, 1)
+        old_size = len(self.pq)
+        self.pq.insert(2, 2)
+        self.assertEqual(old_size + 1, len(self.pq))
+
+    def test_queue_max_size(self):
+        self.assertRaises(ValueError, lambda : MinIndexPriorityQueue(0))
 
     def test_push_into_full_queue(self):
-        self.priority_queue = MinPriorityQueue(0)
-        self.assertRaises(MinPriorityQueue.QueueFull, lambda : self.priority_queue.push(1))
-
-        self.priority_queue = MinPriorityQueue(1)
-        self.priority_queue.push(1)
-        self.assertRaises(MinPriorityQueue.QueueFull, lambda : self.priority_queue.push(2))
+        self.pq = MinIndexPriorityQueue(1)
+        self.pq.insert(1, 1)
+        self.assertRaises(MinIndexPriorityQueue.QueueFull, lambda : self.pq.insert(2, 2))
 
     def test_decrement_size_with_pop(self):
-        self.priority_queue = MinPriorityQueue(2)
-        self.priority_queue.push(1)
-        self.priority_queue.push(2)
-        old_size = len(self.priority_queue)
-        self.priority_queue.pop()
-        self.assertEqual(old_size - 1, len(self.priority_queue))
+        self.pq = MinIndexPriorityQueue(2)
+        self.pq.insert(1, 1)
+        self.pq.insert(2, 2)
+        old_size = len(self.pq)
+        self.pq.pop()
+        self.assertEqual(old_size - 1, len(self.pq))
 
     def test_pop_with_empty_queue(self):
-        self.priority_queue = MinPriorityQueue(0)
-        number = self.priority_queue.pop()
-        self.assertIsNone(number)
+        self.pq = MinIndexPriorityQueue(2)
+        self.assertRaises(MinIndexPriorityQueue.QueueEmpty, lambda : self.pq.pop())
 
 if __name__ == '__main__':
     unittest.main()

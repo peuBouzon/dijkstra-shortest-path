@@ -1,27 +1,40 @@
 import math
 
-
-class MinPriorityQueue:
+class MinIndexPriorityQueue:
     class QueueFull(Exception):
+        pass
+    class QueueEmpty(Exception):
         pass
 
     def __init__(self, max_size) -> None:
+        if max_size < 1:
+            raise ValueError('The max size should be greater than 0')
+
         self.max_size = max_size
         self.size = 0
-        self.heap = [math.inf] * (max_size + 1) # sum one because the 0 index is not used
+        self.elements = [math.inf] * (max_size + 1) # sum one because the 0 index is not used
+        # heap with indexes of self.elements
+        self.heap = [None] * (max_size + 1) 
+        # maps the index of an element in the heap.
+        self.inverse_heap = [-1] * (max_size + 1) # heap[inverse_heap[element]] = element
 
     def __len__(self):
         return self.size
     
     def __bool__(self):
-        return len(self) > 0
+        return self.size > 0
     
+    def contains(self, element):
+        return self.inverse_heap[element] != -1
+
     # Push element at the bottom and "swim" upwards
-    def push(self, value):
+    def insert(self, index, element):
         if self.size >= self.max_size:
-            raise MinPriorityQueue.QueueFull
+            raise MinIndexPriorityQueue.QueueFull
         self.size += 1
-        self.heap[self.size] = value
+        self.heap[self.size] = index
+        self.inverse_heap[index] = self.size
+        self.elements[index] = element
         self._swim(self.size)
 
     # Bottom-up heapify
@@ -31,16 +44,17 @@ class MinPriorityQueue:
             self._swap(index, parent_index)
             index = parent_index
     
-    # Delete and return the min element. The last element is put at the top and sunk down.
     def pop(self):
-        if not self.size:
-            return None
-        min = self.heap[1]
-        self.heap[1] = self.heap[self.size]
-        self.heap[self.size] = math.inf
+        if self.size <= 0:
+            raise MinIndexPriorityQueue.QueueEmpty()
+        index_min = self.heap[1]
+        min = self.elements[index_min]
+        self._swap(1, self.size)
         self.size -= 1
         self._sink(1)
-        return min
+        self.elements[self.heap[self.size + 1]] = None
+        self.inverse_heap[self.heap[self.size + 1]] = -1
+        return index_min, min
 
     # Top-down heapify
     def _sink(self, index):
@@ -57,12 +71,19 @@ class MinPriorityQueue:
             self._swap(index, child_index)
             index = child_index
 
+    def change(self, index, element):
+        self.elements[index] = element
+        self._sink(self.inverse_heap[index])
+        self._swim(self.inverse_heap[index])
+
     def _less(self, i, j):
-        return self.heap[i] < self.heap[j]
+        return self.elements[self.heap[i]] < self.elements[self.heap[j]]
     
     def _swap(self, i, j):
         temp = self.heap[i]
         self.heap[i] = self.heap[j]
         self.heap[j] = temp
+        self.inverse_heap[self.heap[i]] = i
+        self.inverse_heap[self.heap[j]] = j
 
     
