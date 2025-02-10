@@ -12,5 +12,5 @@ class EdgeWeightedDigraph:
         self.edges_from_vertex[edge.source].add(edge)
         self.n_edges += 1
 
-    def edges(self, vertex):
+    def get_edges_from(self, vertex):
         return self.edges_from_vertex[vertex]
