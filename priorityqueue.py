@@ -8,7 +8,7 @@ class MinIndexPriorityQueue:
 
     def __init__(self, max_size) -> None:
         if max_size < 1:
-            raise ValueError('The max size should be greater than 0')
+            raise ValueError('The max size should be greater than zero')
 
         self.max_size = max_size
         self.size = 0
