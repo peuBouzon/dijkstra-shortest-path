@@ -2,25 +2,24 @@ import unittest
 from priorityqueue import MinIndexPriorityQueue
 import random
 
-class TestMinPriorityQueue(unittest.TestCase):
+class TestMinIndexPriorityQueue(unittest.TestCase):
+
+    RANDOM_NUMBERS = [random.randint(-100, 100) for _ in range(10000)]
+
+    def test_access_element_at_index(self):
+        self.pq = self._get_queue(TestMinIndexPriorityQueue.RANDOM_NUMBERS)
+        # TODO: test index based access
 
     def test_pop_min_item(self):
-        numbers = [random.randint(-100, 100) for _ in range(10000)]
-
-        self.pq = MinIndexPriorityQueue(len(numbers))
-        for i, number in enumerate(numbers):
-            self.pq.insert(i + 1, number)
-        sorted_numbers = sorted(numbers)
+        self.pq = self._get_queue(TestMinIndexPriorityQueue.RANDOM_NUMBERS)
+        sorted_numbers = sorted(TestMinIndexPriorityQueue.RANDOM_NUMBERS)
         i = 0
         while self.pq:
             self.assertEqual(sorted_numbers[i], self.pq.pop()[1])
             i += 1
 
     def test_change(self):
-        self.pq = MinIndexPriorityQueue(4)
-        for i in range(1, 4):
-            self.pq.insert(i, i)
-
+        self.pq = self._get_queue([1, 2, 3, 4])
         self.pq.change(2, -1) # now the second element is the smallest
         min_index, min = self.pq.pop()
         self.assertEqual(min_index, 2)
@@ -58,6 +57,12 @@ class TestMinPriorityQueue(unittest.TestCase):
     def test_pop_with_empty_queue(self):
         self.pq = MinIndexPriorityQueue(2)
         self.assertRaises(MinIndexPriorityQueue.QueueEmpty, lambda : self.pq.pop())
+
+    def _get_queue(self, numbers):
+        pq = MinIndexPriorityQueue(len(numbers))
+        for i, number in enumerate(numbers):
+            pq.insert(i + 1, number)
+        return pq
 
 if __name__ == '__main__':
     unittest.main()
