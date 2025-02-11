@@ -44,3 +44,30 @@ class Dijkstra:
         for edge in graph.get_edges_from(vertex):
             self._relax(edge)
 
+
+if __name__ == '__main__':
+    source = 0
+    graph = EdgeWeightedDigraph(5)
+    graph.add_edge(DirectedEdge(0, 1, 1.0))
+    graph.add_edge(DirectedEdge(0, 2, 8.4))
+    graph.add_edge(DirectedEdge(1, 2, 8.2))
+    graph.add_edge(DirectedEdge(1, 3, 6.1))
+    graph.add_edge(DirectedEdge(2, 3, 9.0))
+    graph.add_edge(DirectedEdge(3, 4, 32.0))
+    dijkstra = Dijkstra(graph, source)
+
+    for vertex in range(5):
+        if vertex == source:
+            print(f'Source vertex: {source}')
+            continue
+
+        path = dijkstra.get_path_to(vertex)
+        vertices_in_path = []
+        while True:
+            try:
+                e = path.pop()
+                vertices_in_path.append(str(e.target))
+            except IndexError:
+                break
+            
+        print(f'Path to vertex {vertex}: {source} -> {' -> '.join(vertices_in_path)} ({dijkstra.get_distance_to(vertex)})')
