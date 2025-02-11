@@ -1,9 +1,8 @@
-# This code is part of an assignment of my master's degree.
-
 from dijkstra import Dijkstra
 from edgeweighteddigraph import EdgeWeightedDigraph
 from directededge import DirectedEdge
 from typing import Tuple
+import argparse
 
 def get_graph_and_source_from_txt(path : str) -> Tuple[EdgeWeightedDigraph, int]:
     with open(path, 'r') as file:
@@ -25,9 +24,35 @@ def get_graph_and_source_from_txt(path : str) -> Tuple[EdgeWeightedDigraph, int]
 
         return graph, dijkstra_source_vertex
 
+def save_shortest_paths_as_txt(dijkstra : Dijkstra, output_file):
+    vertices_ordered_by_distance = [i[0] for i in sorted(enumerate(dijkstra.distances), key=lambda x: x[1])]
+    output = [f'SHORTEST PATH TO node_{source}: node_{source} <- node_{source} (Distance: 0.00)']
+    for vertex in vertices_ordered_by_distance:
+        if vertex == source:
+            continue
+        else:
+            path = dijkstra.get_path_to(vertex)
+            if not path:
+                continue
+            else:
+                reversed_path = [f'node_{path[0].target}']
+                for edge in path:
+                    reversed_path.append(f'node_{edge.source}')
+                str_path = ' <- '.join(reversed_path)
+                output.append(f'SHORTEST PATH TO node_{vertex}: {str_path} (Distance: {dijkstra.get_distance_to(vertex):.2f})')
 
-graph, source = get_graph_and_source_from_txt('input.txt')
+    with open(output_file, 'w') as f:
+        f.write('\n'.join(output))
 
-dijkstra = Dijkstra(graph, source)
-dijkstra.distances
-print(dijkstra.distances)
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('input')
+    parser.add_argument('output')
+    args = parser.parse_args()
+
+    graph, source = get_graph_and_source_from_txt(args.input)
+
+    dijkstra = Dijkstra(graph, source)
+
+    save_shortest_paths_as_txt(dijkstra, args.output)
+
