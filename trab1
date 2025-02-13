@@ -1,8 +1,7 @@
+from typing import Tuple
 from dijkstra import Dijkstra
 from edgeweighteddigraph import EdgeWeightedDigraph
 from directededge import DirectedEdge
-from typing import Tuple
-import argparse
 
 def get_graph_and_source_from_txt(path : str) -> Tuple[EdgeWeightedDigraph, int]:
     dijkstra_source_vertex = None
@@ -53,14 +52,17 @@ def save_shortest_paths_as_txt(dijkstra : Dijkstra, output_file):
         f.write('\n'.join(output))
 
 if __name__ == '__main__':
+    import time
+    import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('input')
     parser.add_argument('output')
     args = parser.parse_args()
-
+    
     graph, source = get_graph_and_source_from_txt(args.input)
 
+    start = time.time()
     dijkstra = Dijkstra(graph, source)
+    print(f'Elapsed time: {time.time() - start}')
 
     save_shortest_paths_as_txt(dijkstra, args.output)
-
