@@ -1,8 +1,8 @@
 import math
 import unittest
-from dijkstra import Dijkstra
-from edgeweighteddigraph import EdgeWeightedDigraph
-from directededge import DirectedEdge
+from dijkstra_shortest_path import DijkstraShortestPath
+from edge_weighted_digraph import EdgeWeightedDigraph
+from directed_edge import DirectedEdge
 
 class TestDijkstra(unittest.TestCase):
     def setUp(self):
@@ -13,7 +13,7 @@ class TestDijkstra(unittest.TestCase):
         self.graph.add_edge(DirectedEdge(1, 3, 6.0))
         self.graph.add_edge(DirectedEdge(2, 3, 3.0))
         self.graph.add_edge(DirectedEdge(3, 4, 1.0))
-        self.dijkstra = Dijkstra(self.graph, 0)
+        self.dijkstra = DijkstraShortestPath(self.graph, 0)
 
     def test_has_path_to(self):
         for i in range(1,5):

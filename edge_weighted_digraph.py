@@ -1,5 +1,5 @@
-from linkedlist import LinkedList
-from directededge import DirectedEdge
+from linked_list import LinkedList
+from directed_edge import DirectedEdge
 
 class EdgeWeightedDigraph:
     def __init__(self, n_vertices : int):

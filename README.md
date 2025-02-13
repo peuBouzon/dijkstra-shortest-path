@@ -1,6 +1,6 @@
 # Dijkstra Shortest Path Algorithm
 
-This project implements Dijkstra's algorithm to find the shortest path in a graph.
+This project implements Dijkstra's algorithm to find the shortest path in a graph using an indexed min priority queue and linked lists.
 
 ## Table of Contents
 - [Usage](#usage)
@@ -11,6 +11,11 @@ This project implements Dijkstra's algorithm to find the shortest path in a grap
 To use the algorithm, run the following command:
 ```bash
 python dijkstra.py
+```
+
+Run tests with:
+```bash
+python -m unittest discover <REPOSITORY_PATH> -p 'test_*'
 ```
 
 ## Contributing

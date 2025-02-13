@@ -1,5 +1,5 @@
 import unittest
-from linkedlist import LinkedList
+from linked_list import LinkedList
 
 import random
 

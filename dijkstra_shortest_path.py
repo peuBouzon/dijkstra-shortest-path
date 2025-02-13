@@ -1,9 +1,9 @@
 import math
-from directededge import DirectedEdge
-from edgeweighteddigraph import EdgeWeightedDigraph
+from directed_edge import DirectedEdge
+from edge_weighted_digraph import EdgeWeightedDigraph
 from priorityqueue import MinIndexPriorityQueue
 
-class Dijkstra:
+class DijkstraShortestPath:
     def __init__(self, graph : EdgeWeightedDigraph, source : int) -> None:
         self.source = source
         self.distances = [math.inf] * graph.n_vertices
@@ -14,6 +14,9 @@ class Dijkstra:
         self.priority_queue.insert(source, 0.0)
         while self.priority_queue:
             self.relax(graph, self.priority_queue.pop()[0])
+
+    def get_source(self):
+        return self.source
 
     def get_distances(self):
         return self.distances
@@ -57,7 +60,7 @@ if __name__ == '__main__':
     graph.add_edge(DirectedEdge(1, 3, 6.1))
     graph.add_edge(DirectedEdge(2, 3, 9.0))
     graph.add_edge(DirectedEdge(3, 4, 32.0))
-    dijkstra = Dijkstra(graph, source)
+    dijkstra = DijkstraShortestPath(graph, source)
 
     for vertex in range(5):
         if vertex == source:
