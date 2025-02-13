@@ -3,7 +3,7 @@ class _Node:
         self.item = None
         self.next = None
 
-class Bag:
+class LinkedList:
     def __init__(self):
         self.first = None
 

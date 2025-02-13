@@ -1,4 +1,4 @@
-from bag import Bag
+from linkedlist import LinkedList
 from directededge import DirectedEdge
 
 class EdgeWeightedDigraph:
@@ -7,7 +7,7 @@ class EdgeWeightedDigraph:
         self.n_edges = 0
         self.edges_from_vertex = []
         for _ in range(n_vertices):
-            self.edges_from_vertex.append(Bag())
+            self.edges_from_vertex.append(LinkedList())
 
     def add_edge(self, edge : DirectedEdge):
         self.edges_from_vertex[edge.source].add(edge)

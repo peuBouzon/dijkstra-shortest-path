@@ -1,13 +1,13 @@
 import unittest
-from bag import Bag
+from linkedlist import LinkedList
 
 import random
 
-class TestBag(unittest.TestCase):
+class TestLinkedList(unittest.TestCase):
     def test_add(self):
         numbers = [random.randint(-100, 100) for _ in range(10000)]
 
-        bag = Bag()
+        bag = LinkedList()
         for number in numbers:
             bag.add(number)
 
