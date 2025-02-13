@@ -15,6 +15,9 @@ class Dijkstra:
         while self.priority_queue:
             self.relax(graph, self.priority_queue.pop()[0])
 
+    def get_distances(self):
+        return self.distances
+
     def get_distance_to(self, vertex : int):
         return self.distances[vertex]
 

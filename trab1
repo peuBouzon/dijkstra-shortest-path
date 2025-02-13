@@ -33,7 +33,7 @@ def get_graph_and_source_from_txt(path : str) -> Tuple[EdgeWeightedDigraph, int]
     return graph, dijkstra_source_vertex
 
 def save_shortest_paths_as_txt(dijkstra : Dijkstra, output_file):
-    vertices_ordered_by_distance = [i[0] for i in sorted(enumerate(dijkstra.distances), key=lambda x: x[1])]
+    vertices_ordered_by_distance = [i[0] for i in sorted(enumerate(dijkstra.get_distances()), key=lambda x: x[1])]
     output = [f'SHORTEST PATH TO node_{source}: node_{source} <- node_{source} (Distance: 0.00)']
     for vertex in vertices_ordered_by_distance:
         if vertex == source:
