@@ -8,7 +8,8 @@ def from_txt(path : str) -> Tuple[EdgeWeightedDigraph, int]:
     graph = None
     with open(path, 'r') as file:
         for line in file:
-            if not dijkstra_source_vertex:
+            if dijkstra_source_vertex is None:
+                # the first line contains the source vertex
                 dijkstra_source_vertex = int(line.strip().replace('node_', ''))
                 continue
             
@@ -23,7 +24,7 @@ def from_txt(path : str) -> Tuple[EdgeWeightedDigraph, int]:
                 try:
                     weight = float(weight)
                     if weight > 0:
-                        graph.add_edge(DirectedEdge(source, target + 1, weight))
+                        graph.add_edge(DirectedEdge(source, target if target < source else target + 1, weight))
                 except ValueError:
                     # Ignore edges with non numeric weights
                     pass
