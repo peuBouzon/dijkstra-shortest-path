@@ -39,6 +39,7 @@ class MinIndexPriorityQueue:
 
     # Bottom-up heapify
     def _swim(self, index):
+        # while the "child" is smaller than the parent, swap them
         while index > 1 and self._less(index, index // 2):
             parent_index = index // 2
             self._swap(index, parent_index)
@@ -48,7 +49,9 @@ class MinIndexPriorityQueue:
         if self.size <= 0:
             raise MinIndexPriorityQueue.QueueEmpty()
         index_min = self.heap[1]
+        # remove the smallest element from the heap
         min = self.elements[index_min]
+        # adds the greatest element to the top and then sink it
         self._swap(1, self.size)
         self.size -= 1
         self._sink(1)
@@ -67,12 +70,15 @@ class MinIndexPriorityQueue:
             # if the parent is smaller than both childs, the heapify is done
             if self._less(index, child_index):
                 break
-            
+
+            # else swap the parent with the smallest child
             self._swap(index, child_index)
             index = child_index
 
+    # update an element in the heap
     def change(self, index, element):
         self.elements[index] = element
+        # to preserve the heap property, we need to alow the element to swim and sink
         self._sink(self.inverse_heap[index])
         self._swim(self.inverse_heap[index])
 
