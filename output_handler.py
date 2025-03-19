@@ -1,5 +1,6 @@
 from dijkstra_shortest_path import DijkstraShortestPath
 
+# write the distance and shortest path to each vertex to a txt file
 def to_txt(dijkstra : DijkstraShortestPath, output_file : str):
     source = dijkstra.get_source()
     vertices_ordered_by_distance = [i[0] for i in sorted(enumerate(dijkstra.get_distances()), key=lambda x: x[1])]
@@ -12,9 +13,9 @@ def to_txt(dijkstra : DijkstraShortestPath, output_file : str):
             if not path:
                 continue
             else:
-                reversed_path = [f'node_{path[0].target}']
+                reversed_path = [f'node_{path[0][1]}']
                 for edge in path:
-                    reversed_path.append(f'node_{edge.source}')
+                    reversed_path.append(f'node_{edge[0]}')
                 str_path = ' <- '.join(reversed_path)
                 output.append(f'SHORTEST PATH TO node_{vertex}: {str_path} (Distance: {dijkstra.get_distance_to(vertex):.2f})')
 

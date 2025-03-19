@@ -34,17 +34,18 @@ class DijkstraShortestPath:
         edge : DirectedEdge = self.edge_to[vertex]
         while edge is not None:
             path.append(edge)
-            edge = self.edge_to[edge.source]
+            edge = self.edge_to[edge[0]]
         return path
- 
+    
+    # tests whether the distance to the target vertex can be reduced by going through the edge
     def _relax(self, edge : DirectedEdge):
-        if self.distances[edge.target] > self.distances[edge.source] + edge.weight:
-            self.distances[edge.target] = self.distances[edge.source] + edge.weight
-            self.edge_to[edge.target] = edge
-            if (self.priority_queue.contains(edge.target)):
-                self.priority_queue.change(edge.target, self.distances[edge.target])
+        if self.distances[edge[1]] > self.distances[edge[0]] + edge[2]:
+            self.distances[edge[1]] = self.distances[edge[0]] + edge[2]
+            self.edge_to[edge[1]] = edge
+            if (self.priority_queue.contains(edge[1])):
+                self.priority_queue.change(edge[1], self.distances[edge[1]])
             else:
-                self.priority_queue.insert(edge.target, self.distances[edge.target])
+                self.priority_queue.insert(edge[1], self.distances[edge[1]])
 
     def relax(self, graph : EdgeWeightedDigraph, vertex : int):
         for edge in graph.get_edges_from(vertex):
@@ -72,7 +73,7 @@ if __name__ == '__main__':
         while True:
             try:
                 e = path.pop()
-                vertices_in_path.append(str(e.target))
+                vertices_in_path.append(str(e[1]))
             except IndexError:
                 break
             
