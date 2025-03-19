@@ -1,7 +1,7 @@
 from typing import Tuple
-from directed_edge import DirectedEdge
 from edge_weighted_digraph import EdgeWeightedDigraph
 
+# creates a graph from the input txt file
 def from_txt(path : str) -> Tuple[EdgeWeightedDigraph, int]:
     dijkstra_source_vertex = None
     n_vertices = None
@@ -18,16 +18,18 @@ def from_txt(path : str) -> Tuple[EdgeWeightedDigraph, int]:
             if not graph:
                 n_vertices = len(entries)
                 graph = EdgeWeightedDigraph(n_vertices)
-        
+
             source = int(entries[0].replace('node_', ''))
+            edges = []
             for target, weight in enumerate(entries[1:]):
                 try:
                     weight = float(weight)
                     if weight > 0:
-                        graph.add_edge(DirectedEdge(source, target if target < source else target + 1, weight))
+                        edges.append((source, target if target < source else target + 1, weight))
                 except ValueError:
                     # Ignore edges with non numeric weights
                     pass
+            graph.add_edges(source, edges)
 
     return graph, dijkstra_source_vertex
 
