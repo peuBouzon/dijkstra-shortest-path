@@ -24,6 +24,7 @@ def from_txt(path : str) -> Tuple[EdgeWeightedDigraph, int]:
             for target, weight in enumerate(entries[1:]):
                 try:
                     weight = float(weight)
+                    # Ignore edges with non positive weights 
                     if weight > 0:
                         edges.append((source, target if target < source else target + 1, weight))
                 except ValueError:
