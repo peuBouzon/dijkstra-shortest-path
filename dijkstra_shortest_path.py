@@ -1,5 +1,4 @@
 import math
-from directed_edge import DirectedEdge
 from edge_weighted_digraph import EdgeWeightedDigraph
 from priorityqueue import MinIndexPriorityQueue
 
@@ -31,14 +30,14 @@ class DijkstraShortestPath:
         if not self.has_path_to(vertex):
             return None
         path = []
-        edge : DirectedEdge = self.edge_to[vertex]
+        edge : tuple = self.edge_to[vertex]
         while edge is not None:
             path.append(edge)
             edge = self.edge_to[edge[0]]
         return path
     
     # tests whether the distance to the target vertex can be reduced by going through the edge
-    def _relax(self, edge : DirectedEdge):
+    def _relax(self, edge : tuple):
         if self.distances[edge[1]] > self.distances[edge[0]] + edge[2]:
             self.distances[edge[1]] = self.distances[edge[0]] + edge[2]
             self.edge_to[edge[1]] = edge
@@ -55,12 +54,12 @@ class DijkstraShortestPath:
 if __name__ == '__main__':
     source = 0
     graph = EdgeWeightedDigraph(5)
-    graph.add_edge(DirectedEdge(0, 1, 1.0))
-    graph.add_edge(DirectedEdge(0, 2, 8.4))
-    graph.add_edge(DirectedEdge(1, 2, 8.2))
-    graph.add_edge(DirectedEdge(1, 3, 6.1))
-    graph.add_edge(DirectedEdge(2, 3, 9.0))
-    graph.add_edge(DirectedEdge(3, 4, 32.0))
+    graph.add_edge((0, 1, 1.0))
+    graph.add_edge((0, 2, 8.4))
+    graph.add_edge((1, 2, 8.2))
+    graph.add_edge((1, 3, 6.1))
+    graph.add_edge((2, 3, 9.0))
+    graph.add_edge((3, 4, 32.0))
     dijkstra = DijkstraShortestPath(graph, source)
 
     for vertex in range(5):
