@@ -13,14 +13,10 @@ if __name__ == '__main__':
 
     start = time.time()
     graph, source = graph_factory.from_txt(args.input)
-    time_to_build = time.time() - start
-    print(f'Time to build the graph: {time_to_build:f}')
+    print(f'Time to build the graph: {time.time() - start:f}')
 
-    times = timeit.Timer(lambda : DijkstraShortestPath(graph, source)).repeat(repeat=3000, number=1)
-    time_dijkstra = min(times)
-    print(f'Time to find shortest paths:: {time_dijkstra:f}')
-    print(f'total: {time_to_build + time_dijkstra:f}')
-
+    start = time.time() 
     shortest_paths = DijkstraShortestPath(graph, source)
+    print(f'Time to find shortest paths:: {time.time() - start:f}')
 
     output_handler.to_txt(shortest_paths, args.output)
