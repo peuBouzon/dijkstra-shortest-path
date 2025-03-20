@@ -1,9 +1,11 @@
 from dijkstra_shortest_path import DijkstraShortestPath
-
+import time
 # write the distance and shortest path to each vertex to a txt file
 def to_txt(dijkstra : DijkstraShortestPath, output_file : str):
     source = dijkstra.get_source()
+    start = time.time()
     vertices_ordered_by_distance = [i[0] for i in sorted(enumerate(dijkstra.get_distances()), key=lambda x: x[1])]
+    print(f'Time to sort vertices: {time.time() - start:f}')
     output = [f'SHORTEST PATH TO node_{source}: node_{source} <- node_{source} (Distance: 0.00)']
     for vertex in vertices_ordered_by_distance:
         if vertex == source:
