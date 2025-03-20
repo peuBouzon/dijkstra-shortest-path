@@ -5,14 +5,15 @@ from priorityqueue import MinIndexPriorityQueue
 class DijkstraShortestPath:
     def __init__(self, graph : EdgeWeightedDigraph, source : int) -> None:
         self.source = source
-        self.distances = [math.inf] * graph.n_vertices
+        self.distances = [math.inf] * graph.get_n_vertices()
         self.distances[source] = 0
-        self.edge_to = [None] * graph.n_vertices
-        self.priority_queue = MinIndexPriorityQueue(max_size=graph.n_vertices)
+        self.edge_to = [None] * graph.get_n_vertices()
+        self.priority_queue = MinIndexPriorityQueue(max_size=graph.get_n_vertices())
 
         self.priority_queue.insert(source, 0.0)
         while self.priority_queue:
-            self.relax(graph, self.priority_queue.pop()[0])
+            index_min, _ = self.priority_queue.pop()
+            self.relax(graph, index_min)
 
     def get_source(self):
         return self.source
@@ -37,11 +38,12 @@ class DijkstraShortestPath:
         return path
     
     # tests whether the distance to the target vertex can be reduced by going through the edge
+    # edge is composed by (source, target, weight)
     def _relax(self, edge : tuple):
         if self.distances[edge[1]] > self.distances[edge[0]] + edge[2]:
             self.distances[edge[1]] = self.distances[edge[0]] + edge[2]
             self.edge_to[edge[1]] = edge
-            if (self.priority_queue.contains(edge[1])):
+            if (self.priority_queue.contains(edge[1])): # edge[1] is the target vertex
                 self.priority_queue.change(edge[1], self.distances[edge[1]])
             else:
                 self.priority_queue.insert(edge[1], self.distances[edge[1]])
